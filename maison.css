@@ -1,0 +1,129 @@
+body{
+    background-color: #CCCCCC;
+    margin: 0px;
+    padding: 0px;
+}
+header{
+    background-color: #66493D;
+    margin: 0px;
+    padding: 0px;
+    height: 60px;
+    width: 100%;
+    display: block ruby;
+    position: sticky;
+    z-index: 2;
+}
+.logo{
+    height: 60px;
+    float: left;
+}
+#menu{
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+    height: 60px;
+    position: absolute;
+    width: 400px;
+}
+#menu > li{
+    float: left;
+}
+#menu > li > a{
+    height: 30px;
+    padding: 15px;
+    font-size: 1.2em;
+    text-decoration: none;
+    display: inline-block;
+    color: #FFE11C;
+}
+#menu > li > a:hover{
+    background-color: #473229;
+}
+.lang:hover ~ #lga{
+    visibility: visible;
+}
+#lga:hover{
+    visibility: visible;
+}
+#lga{
+    list-style-type: none;
+    visibility: hidden;
+    background-color: #66493D;
+    padding: 0px;
+    text-align: center;
+}
+#lga > li > a{
+    height: 30px;
+    padding: 7px 20px;
+    font-size: 1.2em;
+    text-decoration: none;
+    display: inline-block;
+    color: #FFE11C;
+}
+#lga > li:hover{
+    background-color: #473229;
+}
+.ri{
+    float: right;
+    display: inline-flex;
+}
+.pr1{
+    margin-top: 0px;
+    margin-left: 35px;
+    position: absolute;
+}
+#min_mony{
+    height: 26px;
+    margin: 15px;
+    margin-top: 20px;
+    width: 100px;
+    border-radius: 5px;
+    background-color: #473229;
+    color: #FFE11C;
+    border-color: #FFE11C;
+}
+.pr2{
+    margin-top: 0px;
+    margin-left: 170px;
+    position: absolute;
+}
+#max_mony{
+    height: 26px;
+    margin: 15px;
+    margin-top: 20px;
+    width: 100px;
+    border-radius: 5px;
+    background-color: #473229;
+    color: #FFE11C;
+    border-color: #FFE11C;
+}
+#wilaya{
+    background-color: #473229;
+    border-color: #FFE11C;
+    border-radius: 5px;
+    margin: 16px;
+    height: 28px;
+    scrollbar-width: thin;
+    color: #FFE11C;
+}
+#login{
+    height: 30px;
+    padding: 15px;
+    margin: 0px;
+}
+#login:hover{
+    background-color: #473229;
+}
+.sec{
+    display: inline-block;
+}
+.content{
+    height: 400px;
+    width: 300px;
+    background-color: white;
+    margin: 10px;
+    float: left;
+}
+.img{
+    padding: 10px;
+}

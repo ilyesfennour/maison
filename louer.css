@@ -1,0 +1,70 @@
+body{
+    background-color: #CCCCCC;
+    margin: 0px;
+    padding: 0px;
+}
+header{
+    background-color: #66493D;
+    margin: 0px;
+    padding: 0px;
+    height: 60px;
+    width: 100%;
+    display: block ruby;
+    position: absolute;
+    position: -webkit-sticky;
+    z-index: 2;
+}
+.logo{
+    height: 60px;
+    float: left;
+}
+#menu{
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+    height: 60px;
+    position: relative;
+}
+#menu > li{
+    float: left;
+}
+#menu > li > a{
+    height: 30px;
+    padding: 15px;
+    font-size: 1.2em;
+    text-decoration: none;
+    display: inline-block;
+    color: #FFE11C;
+}
+#menu > li > a:hover{
+    background-color: #473229;
+}
+.lang:hover ~ #lga{
+    visibility: visible;
+}
+#lga:hover{
+    visibility: visible;
+}
+#lga{
+    list-style-type: none;
+    visibility: hidden;
+    background-color: #66493D;
+    padding: 0px;
+    text-align: center;
+}
+#lga > li > a{
+    height: 30px;
+    padding: 7px 20px;
+    font-size: 1.2em;
+    text-decoration: none;
+    display: inline-block;
+    color: #FFE11C;
+}
+#lga > li:hover{
+    background-color: #473229;
+}
+.btn{
+    margin: 3px;
+    width: 400px;
+    height: 25px;
+}

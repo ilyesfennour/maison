@@ -1,0 +1,40 @@
+body{
+    background: url(img/lg1.jpg) no-repeat;
+    background-size: cover;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+div{
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    width: 280px;
+}
+.name{
+    border: none;
+    margin: 5px 0px;
+    padding: 5px 0px;
+    height: 30px;
+    background: none;
+    font-size: 20px;
+    width: 100%;
+    border-bottom: 2px solid #6C7336;
+    overflow: hidden;
+    outline: none;
+}
+#btn{
+    width: 100%;
+    height: 35px;
+    margin-top: 5px;
+    font-size: 20px;
+    background: none;
+    border: 2px solid #6C7336;
+    border-radius: 5px;
+}
+#btn:hover{
+    background-color: #ECF2BB;
+}
+a{
+    color: #6C7336;
+}
