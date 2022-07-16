@@ -1,39 +1,24 @@
 <?php
     session_start();
     require_once 'db.php';
-    if (isset($_POST['action'])) {
-        $id = $_POST['action'];
-        $del_i = $db->prepare("DELETE FROM image WHERE louer_id = :id");
-        $del_i->bindParam('id',$id);
-        $del_i->execute();
-        $del_b= $db->prepare("DELETE FROM bookmark WHERE poste_id = :id");
-        $del_b->bindParam('id',$id);
-        $del_b->execute();
-        $del_l = $db->prepare("DELETE FROM post_status WHERE poste_id = :id");
-        $del_l->bindParam('id',$id);
-        $del_l->execute();
-        $del = $db->prepare("DELETE FROM louer WHERE id = :id");
-        $del->bindParam('id',$id);
-        $del->execute();
-    }
     if(isset($_SESSION['user'])){
         if (isset($_POST['add'])) {
-            header("location:add louer.php",true);
+            header("location:add louer ar.php",true);
         }
         if (isset($_POST['exit'])) {
             session_unset();
             session_destroy();
-            header("location:http://localhost/maison/login.php");
+            header("location:http://localhost/maison/login ar.php");
         }
         if (isset($_POST['edit'])) {
-            header("location:http://localhost/maison/account.php");
+            header("location:http://localhost/maison/account ar.php");
         }
     }else{
-        header("location:login.php",true);
+        header("location:login ar.php",true);
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -41,7 +26,7 @@
     <link rel="stylesheet" href="maison.css" />
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <style>
-         body{
+        body{
             background-color: #CCCCCC;
             font-family: DroidArabicKufiRegular,Muli,sans-serif;
             margin: 0px;
@@ -74,7 +59,7 @@
             position: absolute;
             z-index: 10;
             top: 0px;
-            left: 0px;
+            float: right;
         }
         .menu a img{
             cursor: pointer;
@@ -86,7 +71,6 @@
         }
         #c-menu{
             top: 0px;
-            left: 0px;
             width: 0px;
             margin: 0px;
             padding: 0px;
@@ -99,14 +83,15 @@
             z-index: 10;
         }
         .m-close{
-            margin-top: 18px;
+            margin-top: 8px;
             font-size: 30px;
             color: rgba(0,0,0,.6)!important;
             cursor: pointer;
             font-weight: bold;
-            margin-left: 237px;
+            margin-right: 219px;
             position: absolute;
-            padding: 0px 8.5px;
+            padding: 0px 10px;
+            padding-bottom: 4px;
         }
         .m-close:hover{
             background-color: gainsboro;
@@ -125,7 +110,7 @@
         }
         #pr-menu{
             border-top: 0.5px solid gainsboro;
-            float: left;
+            float: right;
             padding: 8px 2px;
             margin-top: 3px;
             font-size: 1rem;
@@ -137,7 +122,7 @@
             transition: 0.3s;
         }
         #c-menu > a{
-            float: left;
+            float: right;
             padding: 15px 15px;
             text-decoration: none;
             font-size: 1rem;
@@ -164,7 +149,7 @@
         }
         .sr{
             width: 40%;
-            margin-left: 30%;
+            margin-right: 28%;
             line-height: 1.2;
             color: indigo;
             padding: 5px 0px;
@@ -182,11 +167,15 @@
             border-radius: 5px;
         }
         .ri{
-            float: right;
+            float: left;
+        }
+        .ri:hover{
+            background-color: gainsboro;
         }
         #login{
             height: 30px;
             padding: 15px;
+            color: rgba(0,0,0,.87)!important;
             margin: 0px;
             cursor: pointer;
             z-index: 10;
@@ -207,7 +196,7 @@
             width: 300px;
             position: absolute;
             float: left;
-            right: 0px;
+            left: 0px;
             box-shadow: -5px 5px 20px rgb(0,0,0,0.1);
             z-index: 10;
         }
@@ -245,7 +234,7 @@
             justify-content: center;
         }
         .add{
-            margin-left: 10%;
+            margin-right: 10%;
             width: 80%;
             height: 40px;
             background-color: #e4ffff;
@@ -256,7 +245,7 @@
             position: absolute;
         }
         .add > a{
-            float: left;
+            float: right;
             padding: 5.5px 0px;
             text-decoration: none;
             font-size: 1.5rem;
@@ -296,7 +285,7 @@
             width: 25px;
             position: absolute;
             opacity: 80%;
-            float: left;
+            float: right;
             display: none;
             cursor: pointer;
             background-color: whitesmoke;
@@ -306,7 +295,7 @@
             position: absolute;
             opacity: 50%;
             float: right;
-            margin-left: 275px;
+            margin-right: 275px;
             display: none;
             cursor: pointer;
             background-color: whitesmoke;
@@ -325,7 +314,7 @@
             padding: 10px;
         }
         .cbtn{
-            float: left;
+            float: right;
             font-size: large;
             padding: 5px;
             color: rgba(0,0,0,.87)!important;
@@ -336,7 +325,7 @@
             border-radius: 5px;
         }
         .lg{
-            float: right;
+            float: left;
             font-size: large;
             text-decoration: none;
             color: red;
@@ -411,16 +400,18 @@
         }
         .num_like{
             position: relative;
+            padding-right: 55px;
         }
         .heart-n{
             cursor: pointer;
             background: url("img/img.png") no-repeat;
             background-position: right;
             background-size: 2900%;
-            height: 20px;
+            height: 29px;
             width: 75px;
             position: absolute;
             animation: animate .8s steps(28) 1;
+            z-index: 1;
         }
         .heart-n.heart-n-active{
             background-position: left;
@@ -430,9 +421,10 @@
             background: url("img/img.png") no-repeat;
             background-position: left;
             background-size: 2900%;
-            height: 20px;
+            height: 29px;
             width: 75px;
             position: absolute;
+            z-index: 1;
         }
         .heart.heart-active{
             animation: animate .8s steps(28) 1;
@@ -449,8 +441,9 @@
         .bk{
             width: 20px;
             height: 15px;
-            float: right;
+            float: left;
             padding-top: 4px;
+            margin-top: 4px;
             margin-right: 1px;
             cursor: pointer;
             background: url("img/bookmark.png") no-repeat;
@@ -459,9 +452,10 @@
         .bk.active{
             width: 20px;
             height: 15px;
-            float: right;
+            float: left;
             padding-top: 4px;
             margin-right: 1px;
+            margin-top: 2px;
             cursor: pointer;
             background: url("img/bkm.png") no-repeat;
             background-size: cover;
@@ -469,8 +463,9 @@
         .n-bk{
             width: 20px;
             height: 15px;
-            float: right;
+            float: left;
             padding-top: 4px;
+            margin-top: 4px;
             margin-right: 1px;
             cursor: pointer;
             background: url("img/bkm.png") no-repeat;
@@ -479,7 +474,8 @@
         .n-bk.active{
             width: 20px;
             height: 15px;
-            float: right;
+            float: left;
+            margin-top: 4px;
             padding-top: 4px;
             margin-right: 1px;
             cursor: pointer;
@@ -503,108 +499,105 @@
             }
         }
     </style>
-    <title>Rent homes</title>
+    <title>كراء المنازل</title>
 </head>
-<body>
+<body dir="rtl">
     <header class="hed">
         <div class="menu">
             <div id="m-over"></div>
             <div id="c-menu">
                 <span class="m-close">&times;</span>
-                <div id="p-menu">Menu</div>
-                <a href="index.php">Home</a>
-                <a href="louer.php">My home</a>
-                <a href="bkm.php">My archives</a>
-                <span id="pr-menu">Language</span>
+                <div id="p-menu">القائمة</div>
+                <a href="maison ar.php">صفحة البداية</a>
+                <a href="louer ar.php">منازلي</a>
+                <a href="bkm ar.php">محفوظاتي</a>
+                <span id="pr-menu">اللغة</span>
                 <a href="louer ar.php">العربية</a>
                 <a href="louer.php">English</a>
                 <a href="louer fr.php">Frencais</a>   
-                <span id="pr-menu">Properties</span>
+                <span id="pr-menu">خصائص</span>
                 <form action="" method="post"><select name="wilaya" id="wilaya">
-                    <option value="none">wilaya</option>
-                    <option value="Adrar">1 Adrar</option>
-                    <option value="Chlef">2 Chlef</option>
-                    <option value="Laghouat">3 Laghouat</option>
-                    <option value="Oum El Bouaghi">4 Oum El Bouaghi</option>
-                    <option value="Batna">5 Batna</option>
-                    <option value="Béjaïa">6 Béjaïa</option>
-                    <option value="Biskra">7 Biskra</option>
-                    <option value="Béchar">8 Béchar</option>
-                    <option value="Blida">9 Blida</option>
-                    <option value="Bouira">10 Bouira</option>
-                    <option value="Tamanrasset">11 Tamanrasset</option>
-                    <option value="Tébessa">12 Tébessa</option>
-                    <option value="Tlemcen">13 Tlemcen</option>
-                    <option value="Tiaret">14 Tiaret</option>
-                    <option value="Tizi Ouzou">15 Tizi Ouzou</option>
-                    <option value="Alger">16 Alger</option>
-                    <option value="Djelfa">17 Djelfa</option>
-                    <option value="Jijel">18 Jijel</option>
-                    <option value="Sétif">19 Sétif</option>
-                    <option value="Saïda">20 Saïda</option>
-                    <option value="Skikda">21 Skikda</option>
-                    <option value="Sidi Bel Abbès">22 Sidi Bel Abbès</option>
-                    <option value="Annaba">23 Annaba</option>
-                    <option value="Guelma">24 Guelma</option>
-                    <option value="Constantine">25 Constantine</option>
-                    <option value="Médéa">26 Médéa</option>
-                    <option value="Mostaganem">27 Mostaganem</option>
-                    <option value="M'Sila">28 M'Sila</option>
-                    <option value="Mascara">29 Mascara</option>
-                    <option value="d'Ouargla">30 d'Ouargla</option>
-                    <option value="Oran">31 Oran</option>
-                    <option value="El Bayadh">32 El Bayadh</option>
-                    <option value="Illizi">33 Illizi</option>
-                    <option value="Bordj Bou Arreridj">34 Bordj Bou Arreridj</option>
-                    <option value="Boumerdès">35 Boumerdès</option>
-                    <option value="El Tarf">36 El Tarf</option>
-                    <option value="Tindouf">37 Tindouf</option>
-                    <option value="Tissemsilt">38 Tissemsilt</option>
-                    <option value="El Oued">39 El Oued</option>
-                    <option value="Khenchela">40 Khenchela</option>
-                    <option value="Souk Ahras">41 Souk Ahras</option>
-                    <option value="Tipaza">42 Tipaza</option>
-                    <option value="Mila">43 Mila</option>
-                    <option value="Aïn Defla">44 Aïn Defla</option>
-                    <option value="Naâma">45 Naâma</option>
-                    <option value="Aïn Témouchent">46 Aïn Témouchent</option>
-                    <option value="Ghardaïa">47 Ghardaïa</option>
-                    <option value="Relizane">48 Relizane</option>
-                    <option value="Timimoun">49 Timimoun</option>
-                    <option value="Bordj Badji Mokhtar">50 Bordj Badji Mokhtar</option>
-                    <option value="Ouled Djellal">51 Ouled Djellal</option>
-                    <option value="Béni Abbès">52 Béni Abbès</option>
-                    <option value="In Salah">53 In Salah</option>
-                    <option value="In Guezzam">54 In Guezzam</option>
-                    <option value="Touggourt">55 Touggourt</option>
-                    <option value="Djanet">56 Djanet</option>
-                    <option value="El M'Ghair">57 El M'Ghair</option>
-                    <option value="El Meniaa">58 El Meniaa</option>
+                    <option value="none">الولاية</option>
+                    <option value="Adrar">1 أدرار</option>
+                    <option value="Chlef">2 الشلف</option>
+                    <option value="Laghouat">3 الأغواط</option>
+                    <option value="Oum El Bouaghi">4 أم البوقي</option>
+                    <option value="Batna">5 باتنة</option>
+                    <option value="Béjaïa">6 بجاية</option>
+                    <option value="Biskra">7 بسكرة</option>
+                    <option value="Béchar">8 بشار</option>
+                    <option value="Blida">9 البليدة</option>
+                    <option value="Bouira">10 البويرة</option>
+                    <option value="Tamanrasset">11 تمنراست</option>
+                    <option value="Tébessa">12 تبسة</option>
+                    <option value="Tlemcen">13 تلمسان</option>
+                    <option value="Tiaret">14 تيارت</option>
+                    <option value="Tizi Ouzou">15 تيزي وزو</option>
+                    <option value="Alger">16 الجزائر</option>
+                    <option value="Djelfa">17 الجلفة</option>
+                    <option value="Jijel">18 جيجل</option>
+                    <option value="Sétif">19 سطيف</option>
+                    <option value="Saïda">20 سعيدة</option>
+                    <option value="Skikda">21 سكيكدة</option>
+                    <option value="Sidi Bel Abbès">22 سيدي بلعباس</option>
+                    <option value="Annaba">23 عنابة</option>
+                    <option value="Guelma">24 قالمة</option>
+                    <option value="Constantine">25 قسنطينة</option>
+                    <option value="Médéa">26 المدية</option>
+                    <option value="Mostaganem">27 مستغانم</option>
+                    <option value="M'Sila">28 المسيلة</option>
+                    <option value="Mascara">29 معسكر</option>
+                    <option value="d'Ouargla">30 ورقلة</option>
+                    <option value="Oran">31 وهران</option>
+                    <option value="El Bayadh">32 البيض</option>
+                    <option value="Illizi">33 إليزي</option>
+                    <option value="Bordj Bou Arreridj">34 برج بو عريريج</option>
+                    <option value="Boumerdès">35 بومرداس</option>
+                    <option value="El Tarf">36 الطارف</option>
+                    <option value="Tindouf">37 تندوف</option>
+                    <option value="Tissemsilt">38 تيسمسيلت</option>
+                    <option value="El Oued">39 الوادي</option>
+                    <option value="Khenchela">40 خنشلة</option>
+                    <option value="Souk Ahras">41 سوق أهراس</option>
+                    <option value="Tipaza">42 تيبازة</option>
+                    <option value="Mila">43 ميلة</option>
+                    <option value="Aïn Defla">44 عين الدفلى</option>
+                    <option value="Naâma">45 النعامة</option>
+                    <option value="Aïn Témouchent">46 عين تموشنت</option>
+                    <option value="Ghardaïa">47 غرداية</option>
+                    <option value="Relizane">48 غليزان</option>
+                    <option value="Timimoun">49 تيميمون</option>
+                    <option value="Bordj Badji Mokhtar">50 برج باجي مختار</option>
+                    <option value="Ouled Djellal">51 أولاد جلال</option>
+                    <option value="Béni Abbès">52 بني عباس</option>
+                    <option value="In Salah">53 عين صالح</option>
+                    <option value="In Guezzam">54 عين قزام</option>
+                    <option value="Touggourt">55 تقرت</option>
+                    <option value="Djanet">56 جانت</option>
+                    <option value="El M'Ghair">57 المغير</option>
+                    <option value="El Meniaa">58 المنيعة</option>
                 </select>
-                <button type="submit" name="sr" class="sr">Search</button></form>
+                <button type="submit" name="sr" class="sr">ابحث</button></form>
             </div>
             <a><img src="img/menu-burger.png" alt="" class="s-menu"></a>
-            <a href="index.php" class="n"><img src="img/home.png" alt=""></a>
-            <a href="bkm.php" class="n"><img src="img/bookmark.png" alt="" class="bok"></a>
+            <a href="maison ar.php" class="n"><img src="img/home.png" alt=""></a>
+            <a href="bkm ar.php" class="n"><img src="img/bookmark.png" alt="" class="bok"></a>
         </div>
         <div class="ri">
-            
             <?php
-                if(isset($_SESSION['user'])){
-                    echo '<form action="" method="POST">
-                    <div id="h-over"></div>
-                    <h2 id="login">'.$_SESSION['user']->f_name.'</h2>
-                        <div id="log">
-                            <button type="submit" name="edit" id="btn">Edit your account</button>
-                            <button type="submit" name="exit" id="btn">Sign out</button>
-                        </form>             
-                    ';                
-                }
+                echo '<form action="" method="POST">
+                <div id="h-over"></div>
+                <h2 id="login">'.$_SESSION['user']->f_name.'</h2>
+                    <div id="log">
+                        <button type="submit" name="edit" id="btn">تعديل حسابك</button>
+                        <button type="submit" name="exit" id="btn">تسجيل الخروج</button>
+                    </form>             
+                ';                
             ?>        
         </div>
     </header>
     <section class="sec">
-        <div class="add"><a href="add louer.php">Add home</a></div>
+        <div class="add"><a href="add louer ar.php">أضف منزل</a></div>
         <div class="Alerts"></div>
         <div class="model">
             <span class="close" >&times;</span>
@@ -614,9 +607,9 @@
         </div>
         <div class="sec-con">
             <div id="al">
-                <p>Are you sure you want to delete?</p>
-                <a class="cbtn">Cancel</a>
-                <div class="dl"><button class="lg" type="submit" name="d">Delete</button></div>
+                <p>هل أنت متأكد أنك تريد الحذف؟</p>
+                <a class="cbtn">إلغاء</a>
+                <div class="dl"><button class="lg" type="submit" name="d">حذف</button></div>
             </div>
         <?php
          if(isset($_SESSION['user'])){
@@ -645,14 +638,14 @@
                 $imshow->execute();
 
                 echo'<div class="content"><form action="" method="POST">
-                <div class="ed"><a href="edit.php?id='.$result['id'].'"><img src="img/editing.png" alt="" class="edi"></a></div>
+                <div class="ed"><a href="edit ar.php?id='.$result['id'].'"><img src="img/editing.png" alt="" class="edi"></a></div>
                 <img src="img/delete.png" alt="" class="del" data-id="'.$result['id'].'">
                 <div id="images">'; 
 
                 foreach ($imshow as $results) {
                     $imgshow = 'data:'.$results['type'].';base64,'.base64_encode($results['image']);       
                     echo'<img src="'.$imgshow.'" alt="" width="150" class="img" data-src="'.$imgshow.'" data-id="'.$result['id'].'" id="h'.$result['id'].'">';
-                }
+                    }
 
                 echo'
                 </div>
@@ -702,7 +695,15 @@
 
                 echo'</form></div>';
             }
- 
+            if (isset($_POST['action'])) {
+                $id = $_POST['action'];
+                $del_l = $db->prepare("DELETE FROM post_status WHERE poste_id = :id");
+                $del_l->bindParam('id',$id);
+                $del_l->execute();
+                $del = $db->prepare("DELETE FROM louer WHERE id = :id");
+                $del->bindParam('id',$id);
+                $del->execute();
+            }
         }
         ?>
         </div> 

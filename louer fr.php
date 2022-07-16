@@ -1,39 +1,24 @@
 <?php
     session_start();
     require_once 'db.php';
-    if (isset($_POST['action'])) {
-        $id = $_POST['action'];
-        $del_i = $db->prepare("DELETE FROM image WHERE louer_id = :id");
-        $del_i->bindParam('id',$id);
-        $del_i->execute();
-        $del_b= $db->prepare("DELETE FROM bookmark WHERE poste_id = :id");
-        $del_b->bindParam('id',$id);
-        $del_b->execute();
-        $del_l = $db->prepare("DELETE FROM post_status WHERE poste_id = :id");
-        $del_l->bindParam('id',$id);
-        $del_l->execute();
-        $del = $db->prepare("DELETE FROM louer WHERE id = :id");
-        $del->bindParam('id',$id);
-        $del->execute();
-    }
     if(isset($_SESSION['user'])){
         if (isset($_POST['add'])) {
-            header("location:add louer.php",true);
+            header("location:add louer fr.php",true);
         }
         if (isset($_POST['exit'])) {
             session_unset();
             session_destroy();
-            header("location:http://localhost/maison/login.php");
+            header("location:http://localhost/maison/login fr.php");
         }
         if (isset($_POST['edit'])) {
-            header("location:http://localhost/maison/account.php");
+            header("location:http://localhost/maison/account fr.php");
         }
     }else{
-        header("location:login.php",true);
+        header("location:login fr.php",true);
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -321,7 +306,7 @@
             background-color: #e4ffff;
             font: 1em sans-serif;
             border-radius: 7px; 
-            width: 250px;
+            width: 310px;
             padding: 10px;
         }
         .cbtn{
@@ -503,108 +488,105 @@
             }
         }
     </style>
-    <title>Rent homes</title>
+    <title>Louer des maisons</title>
 </head>
 <body>
-    <header class="hed">
-        <div class="menu">
-            <div id="m-over"></div>
-            <div id="c-menu">
-                <span class="m-close">&times;</span>
-                <div id="p-menu">Menu</div>
-                <a href="index.php">Home</a>
-                <a href="louer.php">My home</a>
-                <a href="bkm.php">My archives</a>
-                <span id="pr-menu">Language</span>
-                <a href="louer ar.php">العربية</a>
-                <a href="louer.php">English</a>
-                <a href="louer fr.php">Frencais</a>   
-                <span id="pr-menu">Properties</span>
-                <form action="" method="post"><select name="wilaya" id="wilaya">
-                    <option value="none">wilaya</option>
-                    <option value="Adrar">1 Adrar</option>
-                    <option value="Chlef">2 Chlef</option>
-                    <option value="Laghouat">3 Laghouat</option>
-                    <option value="Oum El Bouaghi">4 Oum El Bouaghi</option>
-                    <option value="Batna">5 Batna</option>
-                    <option value="Béjaïa">6 Béjaïa</option>
-                    <option value="Biskra">7 Biskra</option>
-                    <option value="Béchar">8 Béchar</option>
-                    <option value="Blida">9 Blida</option>
-                    <option value="Bouira">10 Bouira</option>
-                    <option value="Tamanrasset">11 Tamanrasset</option>
-                    <option value="Tébessa">12 Tébessa</option>
-                    <option value="Tlemcen">13 Tlemcen</option>
-                    <option value="Tiaret">14 Tiaret</option>
-                    <option value="Tizi Ouzou">15 Tizi Ouzou</option>
-                    <option value="Alger">16 Alger</option>
-                    <option value="Djelfa">17 Djelfa</option>
-                    <option value="Jijel">18 Jijel</option>
-                    <option value="Sétif">19 Sétif</option>
-                    <option value="Saïda">20 Saïda</option>
-                    <option value="Skikda">21 Skikda</option>
-                    <option value="Sidi Bel Abbès">22 Sidi Bel Abbès</option>
-                    <option value="Annaba">23 Annaba</option>
-                    <option value="Guelma">24 Guelma</option>
-                    <option value="Constantine">25 Constantine</option>
-                    <option value="Médéa">26 Médéa</option>
-                    <option value="Mostaganem">27 Mostaganem</option>
-                    <option value="M'Sila">28 M'Sila</option>
-                    <option value="Mascara">29 Mascara</option>
-                    <option value="d'Ouargla">30 d'Ouargla</option>
-                    <option value="Oran">31 Oran</option>
-                    <option value="El Bayadh">32 El Bayadh</option>
-                    <option value="Illizi">33 Illizi</option>
-                    <option value="Bordj Bou Arreridj">34 Bordj Bou Arreridj</option>
-                    <option value="Boumerdès">35 Boumerdès</option>
-                    <option value="El Tarf">36 El Tarf</option>
-                    <option value="Tindouf">37 Tindouf</option>
-                    <option value="Tissemsilt">38 Tissemsilt</option>
-                    <option value="El Oued">39 El Oued</option>
-                    <option value="Khenchela">40 Khenchela</option>
-                    <option value="Souk Ahras">41 Souk Ahras</option>
-                    <option value="Tipaza">42 Tipaza</option>
-                    <option value="Mila">43 Mila</option>
-                    <option value="Aïn Defla">44 Aïn Defla</option>
-                    <option value="Naâma">45 Naâma</option>
-                    <option value="Aïn Témouchent">46 Aïn Témouchent</option>
-                    <option value="Ghardaïa">47 Ghardaïa</option>
-                    <option value="Relizane">48 Relizane</option>
-                    <option value="Timimoun">49 Timimoun</option>
-                    <option value="Bordj Badji Mokhtar">50 Bordj Badji Mokhtar</option>
-                    <option value="Ouled Djellal">51 Ouled Djellal</option>
-                    <option value="Béni Abbès">52 Béni Abbès</option>
-                    <option value="In Salah">53 In Salah</option>
-                    <option value="In Guezzam">54 In Guezzam</option>
-                    <option value="Touggourt">55 Touggourt</option>
-                    <option value="Djanet">56 Djanet</option>
-                    <option value="El M'Ghair">57 El M'Ghair</option>
-                    <option value="El Meniaa">58 El Meniaa</option>
-                </select>
-                <button type="submit" name="sr" class="sr">Search</button></form>
-            </div>
-            <a><img src="img/menu-burger.png" alt="" class="s-menu"></a>
-            <a href="index.php" class="n"><img src="img/home.png" alt=""></a>
-            <a href="bkm.php" class="n"><img src="img/bookmark.png" alt="" class="bok"></a>
+<header class="hed">
+    <div class="menu">
+        <div id="m-over"></div>
+        <div id="c-menu">
+            <span class="m-close">&times;</span>
+            <div id="p-menu">Menu</div>
+            <a href="maison fr.php">accueil</a>
+            <a href="louer fr.php">Ma maison</a>
+            <a href="bkm fr.php">Mes archives</a>
+            <span id="pr-menu">Langue</span>
+            <a href="louer ar.php">العربية</a>
+            <a href="louer.php">English</a>
+            <a href="louer fr.php">Frencais</a>   
+            <span id="pr-menu">Propriétés</span>
+            <form action="" method="post"><select name="wilaya" id="wilaya">
+                <option value="none">wilaya</option>
+                <option value="Adrar">1 Adrar</option>
+                <option value="Chlef">2 Chlef</option>
+                <option value="Laghouat">3 Laghouat</option>
+                <option value="Oum El Bouaghi">4 Oum El Bouaghi</option>
+                <option value="Batna">5 Batna</option>
+                <option value="Béjaïa">6 Béjaïa</option>
+                <option value="Biskra">7 Biskra</option>
+                <option value="Béchar">8 Béchar</option>
+                <option value="Blida">9 Blida</option>
+                <option value="Bouira">10 Bouira</option>
+                <option value="Tamanrasset">11 Tamanrasset</option>
+                <option value="Tébessa">12 Tébessa</option>
+                <option value="Tlemcen">13 Tlemcen</option>
+                <option value="Tiaret">14 Tiaret</option>
+                <option value="Tizi Ouzou">15 Tizi Ouzou</option>
+                <option value="Alger">16 Alger</option>
+                <option value="Djelfa">17 Djelfa</option>
+                <option value="Jijel">18 Jijel</option>
+                <option value="Sétif">19 Sétif</option>
+                <option value="Saïda">20 Saïda</option>
+                <option value="Skikda">21 Skikda</option>
+                <option value="Sidi Bel Abbès">22 Sidi Bel Abbès</option>
+                <option value="Annaba">23 Annaba</option>
+                <option value="Guelma">24 Guelma</option>
+                <option value="Constantine">25 Constantine</option>
+                <option value="Médéa">26 Médéa</option>
+                <option value="Mostaganem">27 Mostaganem</option>
+                <option value="M'Sila">28 M'Sila</option>
+                <option value="Mascara">29 Mascara</option>
+                <option value="d'Ouargla">30 d'Ouargla</option>
+                <option value="Oran">31 Oran</option>
+                <option value="El Bayadh">32 El Bayadh</option>
+                <option value="Illizi">33 Illizi</option>
+                <option value="Bordj Bou Arreridj">34 Bordj Bou Arreridj</option>
+                <option value="Boumerdès">35 Boumerdès</option>
+                <option value="El Tarf">36 El Tarf</option>
+                <option value="Tindouf">37 Tindouf</option>
+                <option value="Tissemsilt">38 Tissemsilt</option>
+                <option value="El Oued">39 El Oued</option>
+                <option value="Khenchela">40 Khenchela</option>
+                <option value="Souk Ahras">41 Souk Ahras</option>
+                <option value="Tipaza">42 Tipaza</option>
+                <option value="Mila">43 Mila</option>
+                <option value="Aïn Defla">44 Aïn Defla</option>
+                <option value="Naâma">45 Naâma</option>
+                <option value="Aïn Témouchent">46 Aïn Témouchent</option>
+                <option value="Ghardaïa">47 Ghardaïa</option>
+                <option value="Relizane">48 Relizane</option>
+                <option value="Timimoun">49 Timimoun</option>
+                <option value="Bordj Badji Mokhtar">50 Bordj Badji Mokhtar</option>
+                <option value="Ouled Djellal">51 Ouled Djellal</option>
+                <option value="Béni Abbès">52 Béni Abbès</option>
+                <option value="In Salah">53 In Salah</option>
+                <option value="In Guezzam">54 In Guezzam</option>
+                <option value="Touggourt">55 Touggourt</option>
+                <option value="Djanet">56 Djanet</option>
+                <option value="El M'Ghair">57 El M'Ghair</option>
+                <option value="El Meniaa">58 El Meniaa</option>
+            </select>
+            <button type="submit" name="sr" class="sr">Chercher</button></form>
         </div>
-        <div class="ri">
-            
-            <?php
-                if(isset($_SESSION['user'])){
-                    echo '<form action="" method="POST">
-                    <div id="h-over"></div>
-                    <h2 id="login">'.$_SESSION['user']->f_name.'</h2>
-                        <div id="log">
-                            <button type="submit" name="edit" id="btn">Edit your account</button>
-                            <button type="submit" name="exit" id="btn">Sign out</button>
-                        </form>             
-                    ';                
-                }
-            ?>        
-        </div>
-    </header>
+        <a><img src="img/menu-burger.png" alt="" class="s-menu"></a>
+        <a href="maison fr.php" class="n"><img src="img/home.png" alt=""></a>
+        <a href="bkm fr.php" class="n"><img src="img/bookmark.png" alt="" class="bok"></a>
+    </div>
+    <div class="ri">
+        <?php
+            echo '<form action="" method="POST">
+            <div id="h-over"></div>
+            <h2 id="login">'.$_SESSION['user']->f_name.'</h2>
+                <div id="log">
+                    <button type="submit" name="edit" id="btn">Modifier votre compte</button>
+                    <button type="submit" name="exit" id="btn">Déconnexion</button>
+                </form>             
+            ';                
+        ?>        
+    </div>
+</header>
     <section class="sec">
-        <div class="add"><a href="add louer.php">Add home</a></div>
+        <div class="add"><a href="add louer fr.php">Ajouter</a></div>
         <div class="Alerts"></div>
         <div class="model">
             <span class="close" >&times;</span>
@@ -614,9 +596,9 @@
         </div>
         <div class="sec-con">
             <div id="al">
-                <p>Are you sure you want to delete?</p>
-                <a class="cbtn">Cancel</a>
-                <div class="dl"><button class="lg" type="submit" name="d">Delete</button></div>
+                <p>Etes-vous sûr que vous voulez supprimer?</p>
+                <a class="cbtn">Annuler</a>
+                <div class="dl"><button class="lg" type="submit" name="d">supprimer</button></div>
             </div>
         <?php
          if(isset($_SESSION['user'])){
@@ -645,14 +627,14 @@
                 $imshow->execute();
 
                 echo'<div class="content"><form action="" method="POST">
-                <div class="ed"><a href="edit.php?id='.$result['id'].'"><img src="img/editing.png" alt="" class="edi"></a></div>
+                <div class="ed"><a href="edit fr.php?id='.$result['id'].'"><img src="img/editing.png" alt="" class="edi"></a></div>
                 <img src="img/delete.png" alt="" class="del" data-id="'.$result['id'].'">
                 <div id="images">'; 
 
                 foreach ($imshow as $results) {
                     $imgshow = 'data:'.$results['type'].';base64,'.base64_encode($results['image']);       
                     echo'<img src="'.$imgshow.'" alt="" width="150" class="img" data-src="'.$imgshow.'" data-id="'.$result['id'].'" id="h'.$result['id'].'">';
-                }
+                    }
 
                 echo'
                 </div>
@@ -702,7 +684,15 @@
 
                 echo'</form></div>';
             }
- 
+            if (isset($_POST['action'])) {
+                $id = $_POST['action'];
+                $del_l = $db->prepare("DELETE FROM post_status WHERE poste_id = :id");
+                $del_l->bindParam('id',$id);
+                $del_l->execute();
+                $del = $db->prepare("DELETE FROM louer WHERE id = :id");
+                $del->bindParam('id',$id);
+                $del->execute();
+            }
         }
         ?>
         </div> 

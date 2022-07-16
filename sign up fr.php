@@ -14,7 +14,7 @@ if(isset($_POST['btn'])){
         $chec->execute();
        
         if ($chec->rowCount()>0) {    
-            echo'This email is used';
+            echo'Cet e-mail est utilisé';
         }else{
             $add = $db->prepare("INSERT INTO signup(f_name,l_name,email,password,code)
             VALUES(:f_name,:l_name,:email,:password,:code)");
@@ -28,8 +28,8 @@ if(isset($_POST['btn'])){
                 require_once 'mailer.php';
                 $mail->setFrom('ilyeeees220@gmail.com', 'maison');
                 $mail->addAddress($email);
-                $mail->Subject = 'verification code';
-                $mail->Body    = '<h1>Thank you for registering on our site</h1><p>To verify your account <a href="http://localhost/maison/active.php?code='.$code.'">Press here</a></p>';
+                $mail->Subject = 'Le code de vérification';
+                $mail->Body    = '<h1>Merci de vous être inscrit sur notre site</h1><p>Pour vérifier votre compte <a href="http://localhost/maison/active fr.php?code='.$code.'">cliquez ici</a></p>';
                 $mail->send();
 
                 $login = $db->prepare("SELECT * FROM signup WHERE email = :email AND password = :password");
@@ -42,36 +42,36 @@ if(isset($_POST['btn'])){
                 session_destroy();
                 session_start();
                 $_SESSION['user'] = $user;
-                header("location:active.php",true);
+                header("location:active fr.php",true);
             }else{
-                echo'an error occurred!!';
+                echo"une erreur s'est produite !!";
             }
         }
     } else {
-        echo'Your password and confirm password must be the same!!';
+        echo'Votre mot de passe et votre mot de passe de confirmation doivent être identiques !!';
     }
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="sign up.css">
-    <title>sign up</title>
+    <title>S'inscrire</title>
 </head>
 <body>
     <div>
         <form action="" method="POST">
-            <h1>Sign Up</h1>
-            <input type="text" placeholder="First Name" class="name" name="fname" require><br>
-            <input type="text" placeholder="Last Name" class="name" name="lname" require><br>
-            <input type="email" placeholder="Adress email" class="name" name="email" require><br>
-            <input type="password" placeholder="Password" class="name" name="pass" require><br>
-            <input type="password" placeholder="Confirm Password" class="name" name="cpass" require><br>
-            <button type="submit" id="btn" name="btn">Submit</button>
-            <p>Do you have an account?<a href="login.php">Sign In</a></p>
+            <h1>S'inscrire</h1>
+            <input type="text" placeholder="Prénom" class="name" name="fname" require><br>
+            <input type="text" placeholder="Nom" class="name" name="lname" require><br>
+            <input type="email" placeholder="Adresse e-mail" class="name" name="email" require><br>
+            <input type="password" placeholder="Mot de passe" class="name" name="pass" require><br>
+            <input type="password" placeholder="Confirmez le mot de passe" class="name" name="cpass" require><br>
+            <button type="submit" id="btn" name="btn">Soumettre</button>
+            <p>Avez-vous un compte?<a href="login fr.php">S'identifier</a></p>
         </form>
     </div>
 </body>

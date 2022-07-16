@@ -1,5 +1,7 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
 
 require_once 'PHPMailer/Exception.php';
 require_once 'PHPMailer/PHPMailer.php';
@@ -11,7 +13,7 @@ $mail->isSMTP();
 $mail->Host       = 'smtp.gmail.com';                     
 $mail->SMTPAuth   = true;                                   
 $mail->Username   = 'ilyeeees220@gmail.com';                     
-$mail->Password   = 'if08122003';                               
+$mail->Password   = 'vflfqwqfpyizzoty';                               
 $mail->SMTPSecure = 'ssl';            
 $mail->Port       = 465; 
 

@@ -1,35 +1,14 @@
 <?php
     session_start();
     require_once 'db.php';
-    if (isset($_POST['action'])) {
-        $id = $_POST['action'];
-        $del_i = $db->prepare("DELETE FROM image WHERE louer_id = :id");
-        $del_i->bindParam('id',$id);
-        $del_i->execute();
-        $del_b= $db->prepare("DELETE FROM bookmark WHERE poste_id = :id");
-        $del_b->bindParam('id',$id);
-        $del_b->execute();
-        $del_l = $db->prepare("DELETE FROM post_status WHERE poste_id = :id");
-        $del_l->bindParam('id',$id);
-        $del_l->execute();
-        $del = $db->prepare("DELETE FROM louer WHERE id = :id");
-        $del->bindParam('id',$id);
-        $del->execute();
+    // print_r($_SESSION);
+    if (isset($_POST['exit'])) {
+        session_unset();
+        session_destroy();
+        header("location:http://localhost/maison/login.php");
     }
-    if(isset($_SESSION['user'])){
-        if (isset($_POST['add'])) {
-            header("location:add louer.php",true);
-        }
-        if (isset($_POST['exit'])) {
-            session_unset();
-            session_destroy();
-            header("location:http://localhost/maison/login.php");
-        }
-        if (isset($_POST['edit'])) {
-            header("location:http://localhost/maison/account.php");
-        }
-    }else{
-        header("location:login.php",true);
+    if (isset($_POST['edit'])) {
+        header("location:http://localhost/maison/account.php");
     }
 ?>
 <!DOCTYPE html>
@@ -41,7 +20,7 @@
     <link rel="stylesheet" href="maison.css" />
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <style>
-         body{
+        body{
             background-color: #CCCCCC;
             font-family: DroidArabicKufiRegular,Muli,sans-serif;
             margin: 0px;
@@ -184,9 +163,28 @@
         .ri{
             float: right;
         }
+        .ri:hover{
+            background-color: gainsboro;
+        }
+        #Login{
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-decoration: none;
+            height: 30px;
+            padding: 15px;
+            color: rgba(0,0,0,.87)!important;
+            margin: 0px;
+            cursor: pointer;
+            z-index: 10;
+            display: block;
+        }
+        #Login:hover{
+            background-color: gainsboro;
+        }
         #login{
             height: 30px;
             padding: 15px;
+            color: rgba(0,0,0,.87)!important;
             margin: 0px;
             cursor: pointer;
             z-index: 10;
@@ -241,75 +239,7 @@
             height: 100%;
             display: flex;
             flex-flow: wrap;
-            margin-top: 50px;
             justify-content: center;
-        }
-        .add{
-            margin-left: 10%;
-            width: 80%;
-            height: 40px;
-            background-color: #e4ffff;
-            border-radius: 5px;
-            margin-bottom: 5px;
-            text-align: center;
-            display: block;
-            position: absolute;
-        }
-        .add > a{
-            float: left;
-            padding: 5.5px 0px;
-            text-decoration: none;
-            font-size: 1.5rem;
-            width: 100%;
-            color: rgba(0,0,0,.87)!important;
-            font-family: DroidArabicKufiRegular,Muli,sans-serif;
-            line-height: 1.2;
-            border-radius: 5px;
-        }
-        .add > a:hover{
-            background-color: gainsboro;
-        }
-        .content{
-            width: 300px;
-            background-color: #e4ffff;
-            margin: 4px;
-            padding: 2px;
-            float: left;
-            font: 1em sans-serif;
-            border-radius: 7px;
-            display: flex;
-            box-shadow: -5px 5px 20px rgb(0,0,0,0.25);
-        }
-        .content:hover .edi{
-            display: block;
-        }
-        .edi:hover{
-            display: block;
-        }
-        .content:hover .del{
-            display: block;
-        }
-        .del:hover{
-            display: block;
-        }
-        .edi{
-            width: 25px;
-            position: absolute;
-            opacity: 80%;
-            float: left;
-            display: none;
-            cursor: pointer;
-            background-color: whitesmoke;
-        }
-        .del{
-            width: 25px;
-            position: absolute;
-            opacity: 50%;
-            float: right;
-            margin-left: 275px;
-            display: none;
-            cursor: pointer;
-            background-color: whitesmoke;
         }
         #al{
             display: none;
@@ -341,13 +271,21 @@
             text-decoration: none;
             color: red;
             padding: 5px;
-            background: none;
-            cursor: pointer;
-            border: none;
         }
         .lg:hover{
             background-color: #CCCCCC;
             border-radius: 5px;
+        }
+        .content{
+            width: 300px;
+            background-color: #e4ffff;
+            margin: 4px;
+            padding: 2px;
+            float: left;
+            font: 1em sans-serif;
+            border-radius: 7px;
+            display: flex;
+            box-shadow: -5px 5px 20px rgb(0,0,0,0.25);
         }
         #images{
             width: 300px;
@@ -389,9 +327,9 @@
             cursor: pointer;
         }
         .z_content{
-            margin-top: 10%;
+            margin-top: 2%;
             width: 50%;
-            height: 50%;
+            height: auto;
             animation: i_anim 0.5s ease;
         }
         @keyframes i_anim{
@@ -446,6 +384,16 @@
                 background-position: right;
             }
         }
+        .lbk{
+            width: 20px;
+            height: 15px;
+            float: right;
+            padding-top: 4px;
+            margin-right: 1px;
+            cursor: pointer;
+            background: url("img/bookmark.png") no-repeat;
+            background-size: contain;
+        }
         .bk{
             width: 20px;
             height: 15px;
@@ -486,6 +434,9 @@
             background: url("img/bookmark.png") no-repeat;
             background-size: contain;
         }
+        .c{
+            cursor: pointer
+        }
         @media screen and (max-width:310px) {
             .content{
                 width: 200px;
@@ -516,9 +467,9 @@
                 <a href="louer.php">My home</a>
                 <a href="bkm.php">My archives</a>
                 <span id="pr-menu">Language</span>
-                <a href="louer ar.php">العربية</a>
-                <a href="louer.php">English</a>
-                <a href="louer fr.php">Frencais</a>   
+                <a href="maison ar.php">العربية</a>
+                <a href="index.php">English</a>
+                <a href="maison fr.php">Frencais</a>   
                 <span id="pr-menu">Properties</span>
                 <form action="" method="post"><select name="wilaya" id="wilaya">
                     <option value="none">wilaya</option>
@@ -588,7 +539,6 @@
             <a href="bkm.php" class="n"><img src="img/bookmark.png" alt="" class="bok"></a>
         </div>
         <div class="ri">
-            
             <?php
                 if(isset($_SESSION['user'])){
                     echo '<form action="" method="POST">
@@ -599,12 +549,18 @@
                             <button type="submit" name="exit" id="btn">Sign out</button>
                         </form>             
                     ';                
+                }else{
+                    echo '<a href="login.php" id="Login" >login</a>';
                 }
             ?>        
         </div>
     </header>
     <section class="sec">
-        <div class="add"><a href="add louer.php">Add home</a></div>
+        <div id="al">
+            <p>Create an account or login</p>
+            <a class="cbtn">Cancel</a>
+            <a href="login.php" class="lg">Login</a>
+        </div>
         <div class="Alerts"></div>
         <div class="model">
             <span class="close" >&times;</span>
@@ -613,28 +569,23 @@
             <!-- <img src="img/next.png" alt="" class="next"> -->
         </div>
         <div class="sec-con">
-            <div id="al">
-                <p>Are you sure you want to delete?</p>
-                <a class="cbtn">Cancel</a>
-                <div class="dl"><button class="lg" type="submit" name="d">Delete</button></div>
-            </div>
         <?php
          if(isset($_SESSION['user'])){
             $id = $_SESSION['user']->id;
             if (isset($_POST['sr'])) {
                 $wilaya = $_POST['wilaya'];
                 if ($wilaya != 'none') {
-                    $show = $db->prepare("SELECT * FROM louer WHERE user_id = :id AND wilaya = :wilaya");
+                    $show = $db->prepare("SELECT * FROM louer WHERE user_id != :id AND wilaya = :wilaya");
                     $show->bindParam('id',$id);
                     $show->bindParam('wilaya',$wilaya);
                     $show->execute();
                 }else{
-                    $show = $db->prepare("SELECT * FROM louer WHERE user_id = :id");
+                    $show = $db->prepare("SELECT * FROM louer WHERE user_id != :id");
                     $show->bindParam('id',$id);
                     $show->execute();    
                 }
             } else {
-                $show = $db->prepare("SELECT * FROM louer WHERE user_id = :id");
+                $show = $db->prepare("SELECT * FROM louer WHERE user_id != :id");
                 $show->bindParam('id',$id);
                 $show->execute();
             }
@@ -645,14 +596,12 @@
                 $imshow->execute();
 
                 echo'<div class="content"><form action="" method="POST">
-                <div class="ed"><a href="edit.php?id='.$result['id'].'"><img src="img/editing.png" alt="" class="edi"></a></div>
-                <img src="img/delete.png" alt="" class="del" data-id="'.$result['id'].'">
                 <div id="images">'; 
 
                 foreach ($imshow as $results) {
                     $imgshow = 'data:'.$results['type'].';base64,'.base64_encode($results['image']);       
                     echo'<img src="'.$imgshow.'" alt="" width="150" class="img" data-src="'.$imgshow.'" data-id="'.$result['id'].'" id="h'.$result['id'].'">';
-                }
+                    }
 
                 echo'
                 </div>
@@ -702,13 +651,73 @@
 
                 echo'</form></div>';
             }
- 
+        }else{
+            if (isset($_POST['sr'])) {
+                $wilaya = $_POST['wilaya'];
+                if ($wilaya == 'none') {
+                    $show = $db->prepare("SELECT * FROM louer");
+                    $show->execute();
+                }else{
+                    $show = $db->prepare("SELECT * FROM louer WHERE wilaya = :wilaya");
+                    $show->execute();
+                }
+            }else{
+                $show = $db->prepare("SELECT * FROM louer");
+                $show->execute();
+            }
+
+            foreach ($show as $result) {
+                $imshow = $db->prepare("SELECT * FROM image WHERE louer_id = :id");
+                $imshow->bindParam('id',$result['id']);
+                $imshow->execute();
+
+                echo'<div class="content"><form action="" method="POST">
+                <div id="images">'; 
+
+                foreach ($imshow as $results) {
+                    $imgshow = 'data:'.$results['type'].';base64,'.base64_encode($results['image']);       
+                    echo'<img src="'.$imgshow.'" alt="" width="150" class="img" data-src="'.$imgshow.'" data-id="'.$result['id'].'" id="h'.$result['id'].'">';
+                    }
+
+                echo'
+                </div>
+                    <table class="text_cont">';
+                        if ($result['disc'] != '') {
+                            echo'<tr><td class="b">'.$result['disc'].'</td></tr>';
+                        }
+                        echo'<tr><td>'.$result['adress'].'</td></tr>
+                        <tr><td class="b">'.$result['wilaya'].'</td></tr>';
+                        if ($result['facebook'] != '') {
+                            echo'<tr><td><img src="img/facebook.png" alt="facebook" width="20px"> '.$result['facebook'].'</td></tr>';
+                        }
+                        echo'<tr><td class="b"><img src="img/phone-call.png" alt="phone" width="20px"> '.$result['fonne'].'</td></tr>';
+                        if ($result['prix'] != '0') {
+                            echo'<tr><td class="b"><div class="price">'.$result['prix'].' DA</div></td></tr>';
+                        }
+                        echo'<tr><td><img src="img/love.png" alt="" width="20px" onclick="log()" class="c"></div><span class="num_like">'.$result['n_like'].'</span>';
+                        echo'<div class="lbk" onclick="log()"></div></td></tr>';
+                        
+                    echo'</table>
+                ';
+
+                echo'</form></div>'; 
+            }
         }
         ?>
-        </div> 
+        </div>
     </section>
 </body>
 <script type="text/javascript">
+    function log(){
+        document.getElementById('m-over').style.display="block";
+        document.getElementById('al').style.display="block";
+    }
+    $(document).ready(function(){
+        $(document).on('click','.cbtn',function(){
+            document.getElementById('m-over').style.display="none";
+            document.getElementById('al').style.display="none";
+        });
+    });
     $(document).ready(function(){
         $(document).on('click','#login',function(){
             var vis = document.getElementById('log').style.visibility;
@@ -762,39 +771,6 @@
         });
     });
     $(document).ready(function(){
-        $(document).on('click','.del',function(){
-            document.getElementById('m-over').style.display="block";
-            document.getElementById('al').style.display="block";
-        });
-    });
-    $(document).ready(function(){
-        $(document).on('click','.cbtn',function(){
-            document.getElementById('m-over').style.display="none";
-            document.getElementById('al').style.display="none";
-        });
-    });
-    $(document).ready(function(){
-        $(document).on('click','.lg',function(){
-            document.getElementById('m-over').style.display="none";
-            document.getElementById('al').style.display="none";
-        });
-    });
-    $(document).ready(function(){
-        $(document).on('click','.del',function(){
-            var action = $(this).data('id');
-            $(document).on('click','.lg',function(){
-                $.ajax({
-                    url:"louer.php",
-                    type:"post",
-                    data:{action:action},
-                    success:function(data){
-                    }
-                });
-                location.reload();
-            });
-        });
-    });
-    $(document).ready(function(){
         $(document).on('click','.heart-n',function(){
             var action = $(this).data('id');
             $btn = $(this);
@@ -804,6 +780,7 @@
                 data:{action:action},
                 success:function(data){
                     $btn.siblings('span.num_like').text(data);
+                    console.log(data);
                 }
             });
             $(this).toggleClass("heart-n-active");
@@ -819,6 +796,7 @@
                 data:{action:action},
                 success:function(data){
                     $btn.siblings('span.num_like').text(data);
+                    console.log(data);
                 }
             });
             $(this).toggleClass("heart-active");
@@ -843,9 +821,58 @@
     })
     }
     preview();
+    // function zoom(sors) {
+    //     const mymodel = document.querySelector('.model');
+    //     const myimg = document.querySelector('#myimage');
+    //     sors.forEach((img,index)=>{               
+    //         img.addEventListener('click',()=>{
+    //             mymodel.style.display='block';
+    //             myimg.src=img.src;
+    //         })
+    //     })
+    // }
+    // zoom(42,"kvf")
+    // function close() {
+    //     alert('yes');
+    // }
+    // function next() {
+    //     alert('yes');
+    // }
+    
+    // console.log('hh'+i);
+    
+    // console.log(images);
+    // console.log(d_images);
+    // console.log(d_images.length);
+    // function back() {
+        //     alert('yes');
+    // }
+
+    // idp = img.id;
+    //         console.log('#'+idp);
+    //         const d_images = document.querySelectorAll('#images #'+idp);
+    //         d_images.forEach((img,index)=>{        
+    //             img.addEventListener('click',()=>{
+    //                 i = index;
+    //                 console.log(i);
+                    
+    //                 back.addEventListener('click',()=>{
+    //                     if (0<i) {
+    //                         i = i-1;                     
+    //                         myimg.src=d_images[i].src;
+    //                         console.log(i);
+    //                     }else{
+    //                         i = d_images.length-1;
+    //                         myimg.src=d_images[i].src;
+    //                         console.log(i);
+    //                     }
+    //                 })
+    //             })
+    //         })
     $(document).ready(function(){
         $(document).on('click','.bk',function(){
             var action = $(this).data('id');
+            $btn = $(this);
             $.ajax({
                 url:"bkm.php",
                 type:"post",
@@ -859,6 +886,7 @@
     $(document).ready(function(){
         $(document).on('click','.n-bk',function(){
             var action = $(this).data('id');
+            $btn = $(this);
             $.ajax({
                 url:"bkm.php",
                 type:"post",

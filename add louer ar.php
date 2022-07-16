@@ -16,10 +16,10 @@
             $l_code = md5(date("h:i:s").$adress);
 
             if ($_FILES['img']['type'][0] == '') {
-                echo'Must choose a photo';
+                echo'يجب اختيار صورة';
             }else{
                 if ($wilaya == 'none') {
-                    echo'Must choose a Wilaya';
+                    echo'يجب اختيار ولاية';
                 }else{
                     $add = $db->prepare("INSERT INTO louer(user_id,name,disc,wilaya,adress,fonne,facebook,prix,l_code)
                     VALUES(:id,:name,:des,:wil,:adress,:fonne,:fac,:prix,:l_code)");
@@ -33,7 +33,7 @@
                     $add->bindParam('prix',$prix);
                     $add->bindParam('l_code',$l_code);
                     if ($add->execute()) {
-                        echo 'Add success';
+                        echo 'تمت الإضافة بنجاح';
                     }
                     $l_id = $db->prepare("SELECT id FROM louer WHERE user_id = :id AND l_code = :l_code");
                     $l_id->bindParam('id',$id);
@@ -56,14 +56,14 @@
             }
         }
         if (isset($_POST['anul'])) {
-            header("location:louer.php",true);
+            header("location:louer ar.php",true);
         }
     }else{
-        header("location:login.php",true);
+        header("location:login ar.php",true);
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -118,6 +118,8 @@
             color: rgba(0,0,0,.87)!important;
             border-bottom: 0.5px solid gainsboro;
             width: auto;
+            padding-bottom: 10px;
+            margin: 2px;
         }
         label{
             height: 60px;
@@ -165,89 +167,92 @@
             label{
                 height: 45px;
             }
+            .in{
+                padding: 0px;
+            }
             h2{
                 margin: 0px;
             }
         }
     </style>
-    <title>Add home</title>
+    <title>إضافة منزل</title>
 </head>
-<body>
+<body dir="rtl">
     <div class="con">
-        <h2>Add home</h2>
+        <h2>إضافة منزل</h2>
         <form action="" method="post" enctype="multipart/form-data" class="fr">
             <input type="file" id="file" name="img[]" class="img" accept="image/*,video/*" multiple>
-            <label for="file"><img src="img/image.png" alt="" width="30px">Choose a Photo</label>
-            <input type="text" placeholder="Description" name="des" class="in"><br>
+            <label for="file"><img src="img/image.png" alt="" width="30px">اختيار صورة</label>
+            <input type="text" placeholder="الوصف" name="des" class="in"><br>
             <select name="wilaya" id="wilaya" class="in">
-                <option value="none">wilaya</option>
-                <option value="Adrar">1 Adrar</option>
-                <option value="Chlef">2 Chlef</option>
-                <option value="Laghouat">3 Laghouat</option>
-                <option value="Oum El Bouaghi">4 Oum El Bouaghi</option>
-                <option value="Batna">5 Batna</option>
-                <option value="Béjaïa">6 Béjaïa</option>
-                <option value="Biskra">7 Biskra</option>
-                <option value="Béchar">8 Béchar</option>
-                <option value="Blida">9 Blida</option>
-                <option value="Bouira">10 Bouira</option>
-                <option value="Tamanrasset">11 Tamanrasset</option>
-                <option value="Tébessa">12 Tébessa</option>
-                <option value="Tlemcen">13 Tlemcen</option>
-                <option value="Tiaret">14 Tiaret</option>
-                <option value="Tizi Ouzou">15 Tizi Ouzou</option>
-                <option value="Alger">16 Alger</option>
-                <option value="Djelfa">17 Djelfa</option>
-                <option value="Jijel">18 Jijel</option>
-                <option value="Sétif">19 Sétif</option>
-                <option value="Saïda">20 Saïda</option>
-                <option value="Skikda">21 Skikda</option>
-                <option value="Sidi Bel Abbès">22 Sidi Bel Abbès</option>
-                <option value="Annaba">23 Annaba</option>
-                <option value="Guelma">24 Guelma</option>
-                <option value="Constantine">25 Constantine</option>
-                <option value="Médéa">26 Médéa</option>
-                <option value="Mostaganem">27 Mostaganem</option>
-                <option value="M'Sila">28 M'Sila</option>
-                <option value="Mascara">29 Mascara</option>
-                <option value="d'Ouargla">30 d'Ouargla</option>
-                <option value="Oran">31 Oran</option>
-                <option value="El Bayadh">32 El Bayadh</option>
-                <option value="Illizi">33 Illizi</option>
-                <option value="Bordj Bou Arreridj">34 Bordj Bou Arreridj</option>
-                <option value="Boumerdès">35 Boumerdès</option>
-                <option value="El Tarf">36 El Tarf</option>
-                <option value="Tindouf">37 Tindouf</option>
-                <option value="Tissemsilt">38 Tissemsilt</option>
-                <option value="El Oued">39 El Oued</option>
-                <option value="Khenchela">40 Khenchela</option>
-                <option value="Souk Ahras">41 Souk Ahras</option>
-                <option value="Tipaza">42 Tipaza</option>
-                <option value="Mila">43 Mila</option>
-                <option value="Aïn Defla">44 Aïn Defla</option>
-                <option value="Naâma">45 Naâma</option>
-                <option value="Aïn Témouchent">46 Aïn Témouchent</option>
-                <option value="Ghardaïa">47 Ghardaïa</option>
-                <option value="Relizane">48 Relizane</option>
-                <option value="Timimoun">49 Timimoun</option>
-                <option value="Bordj Badji Mokhtar">50 Bordj Badji Mokhtar</option>
-                <option value="Ouled Djellal">51 Ouled Djellal</option>
-                <option value="Béni Abbès">52 Béni Abbès</option>
-                <option value="In Salah">53 In Salah</option>
-                <option value="In Guezzam">54 In Guezzam</option>
-                <option value="Touggourt">55 Touggourt</option>
-                <option value="Djanet">56 Djanet</option>
-                <option value="El M'Ghair">57 El M'Ghair</option>
-                <option value="El Meniaa">58 El Meniaa</option>
+                <option value="none">الولاية</option>
+                <option value="Adrar">1 أدرار</option>
+                <option value="Chlef">2 الشلف</option>
+                <option value="Laghouat">3 الأغواط</option>
+                <option value="Oum El Bouaghi">4 أم البوقي</option>
+                <option value="Batna">5 باتنة</option>
+                <option value="Béjaïa">6 بجاية</option>
+                <option value="Biskra">7 بسكرة</option>
+                <option value="Béchar">8 بشار</option>
+                <option value="Blida">9 البليدة</option>
+                <option value="Bouira">10 البويرة</option>
+                <option value="Tamanrasset">11 تمنراست</option>
+                <option value="Tébessa">12 تبسة</option>
+                <option value="Tlemcen">13 تلمسان</option>
+                <option value="Tiaret">14 تيارت</option>
+                <option value="Tizi Ouzou">15 تيزي وزو</option>
+                <option value="Alger">16 الجزائر</option>
+                <option value="Djelfa">17 الجلفة</option>
+                <option value="Jijel">18 جيجل</option>
+                <option value="Sétif">19 سطيف</option>
+                <option value="Saïda">20 سعيدة</option>
+                <option value="Skikda">21 سكيكدة</option>
+                <option value="Sidi Bel Abbès">22 سيدي بلعباس</option>
+                <option value="Annaba">23 عنابة</option>
+                <option value="Guelma">24 قالمة</option>
+                <option value="Constantine">25 قسنطينة</option>
+                <option value="Médéa">26 المدية</option>
+                <option value="Mostaganem">27 مستغانم</option>
+                <option value="M'Sila">28 المسيلة</option>
+                <option value="Mascara">29 معسكر</option>
+                <option value="d'Ouargla">30 ورقلة</option>
+                <option value="Oran">31 وهران</option>
+                <option value="El Bayadh">32 البيض</option>
+                <option value="Illizi">33 إليزي</option>
+                <option value="Bordj Bou Arreridj">34 برج بو عريريج</option>
+                <option value="Boumerdès">35 بومرداس</option>
+                <option value="El Tarf">36 الطارف</option>
+                <option value="Tindouf">37 تندوف</option>
+                <option value="Tissemsilt">38 تيسمسيلت</option>
+                <option value="El Oued">39 الوادي</option>
+                <option value="Khenchela">40 خنشلة</option>
+                <option value="Souk Ahras">41 سوق أهراس</option>
+                <option value="Tipaza">42 تيبازة</option>
+                <option value="Mila">43 ميلة</option>
+                <option value="Aïn Defla">44 عين الدفلى</option>
+                <option value="Naâma">45 النعامة</option>
+                <option value="Aïn Témouchent">46 عين تموشنت</option>
+                <option value="Ghardaïa">47 غرداية</option>
+                <option value="Relizane">48 غليزان</option>
+                <option value="Timimoun">49 تيميمون</option>
+                <option value="Bordj Badji Mokhtar">50 برج باجي مختار</option>
+                <option value="Ouled Djellal">51 أولاد جلال</option>
+                <option value="Béni Abbès">52 بني عباس</option>
+                <option value="In Salah">53 عين صالح</option>
+                <option value="In Guezzam">54 عين قزام</option>
+                <option value="Touggourt">55 تقرت</option>
+                <option value="Djanet">56 جانت</option>
+                <option value="El M'Ghair">57 المغير</option>
+                <option value="El Meniaa">58 المنيعة</option>
             </select><br>
-            <input type="text" placeholder="Address" name="adress" class="in"><br>
-            <input type="text" placeholder="Phone number" name="f_num" class="in" required><br>
-            <input type="text" placeholder="Facebook" name="facb" class="in"><br>
-            <input type="number" placeholder="price" name="prix" class="in"><br>
-            <button name="cadd" class="btn">Add</button>
+            <input type="text" placeholder="العنوان" name="adress" class="in" required><br>
+            <input type="text" placeholder="رقم الهاتف" name="f_num" class="in" required><br>
+            <input type="text" placeholder="فيسبوك" name="facb" class="in"><br>
+            <input type="number" placeholder="السعر" name="prix" class="in"><br>
+            <button name="cadd" class="btn">إضافة</button>
         </form>
         <form action="" method="post">
-            <button name="anul" class="btn">Cancel</button>
+            <button name="anul" class="btn">إلغاء</button>
         </form>
     </div>
 </body>

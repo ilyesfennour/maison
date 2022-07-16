@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,28 +19,28 @@
             font-size: 17px;
         }
     </style>
-    <title>Account activate</title>
+    <title>تفعيل الحساب</title>
 </head>
-<body>
+<body dir="rtl">
 <?php
     session_start();
     if(isset($_SESSION['user'])){
         $email = $_SESSION['user']->email;
         $code = $_SESSION['user']->code;
         echo'<form action="" method="post">
-            <h1>Account activate</h1>
-            <p>Thank you for registering on our site.</p>
-            <p>We have sent a message to your email <a href="https://www.gmail.com">'.$email.'</a>, please go to it to complete the process.
-            <button type="submit" name="s" class="s">Send again!</button></p>
+            <h1>تفعيل الحساب</h1>
+            <p>شكرا لك على التسجيل في موقعنا.</p>
+            <p>لقد أرسلنا رسالة إلى بريدك الإلكتروني <a href="https://www.gmail.com">'.$email.'</a>, يرجى الذهاب إليه لإكمال العملية.
+            <button type="submit" name="s" class="s">أعد الإرسال!</button></p>
         </form>';
         if (isset($_POST['s'])) {
             require_once 'mailer.php';
             $mail->setFrom('ilyeeees220@gmail.com', 'maison');
             $mail->addAddress($email);
             $mail->Subject = 'verification code';
-            $mail->Body    = '<h1>Thank you for registering on our site</h1><p>To verify your account <a href="http://localhost/maison/active.php?code='.$code.'">Press here</a></p>';
+            $mail->Body    = '<h1>شكرا لك على التسجيل في موقعنا</h1><p>للتحقق من حسابك <a href="http://localhost/maison/active ar.php?code='.$code.'">اضغط هنا</a></p>';
             $mail->send();
-            echo'We have sent another message';
+            echo'لقد أرسلنا رسالة أخرى';
         }
         if (isset($_GET['code'])) {
             require_once 'db.php';
@@ -54,14 +54,14 @@
                 $update->bindParam('newcode',$code);
             
                 if ($update->execute()) {
-                    echo'Your account has been successfully verified<a href="login.php">Login</a>';
+                    echo'تم التحقق من حسابك بنجاح<a href="login ar.php">تسجيل الدخول</a>';
                 }
             }else {
-                echo'This code is no longer valid';
+                echo'هذا الرمز لم يعد صالحا';
             }
         }
     }else{
-        header("location:login.php",true);
+        header("location:login ar.php",true);
     }
 ?>
 </body>

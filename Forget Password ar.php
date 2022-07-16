@@ -13,31 +13,31 @@ if(isset($_POST['btn'])){
         $mail->setFrom('ilyeeees220@gmail.com', 'maison');
         $mail->addAddress($email);
         $mail->Subject = 'Reset Password';
-        $mail->Body    = '<h1>Thank you for using our site</h1><p>This is your password:'.$pass->password.'<a href="http://localhost/maison/login.php?">Sign in</a></p>';
+        $mail->Body    = '<h1>شكرا لكم لاستخدام موقعنا</h1><p>هذه هي كلمة مرورك: '.$pass->password.'<a href="http://localhost/maison/login ar.php?">تسجيل الدخول</a></p>';
         $mail->send();
-        echo'We have sent a message to your email '.$email;
+        echo'لقد أرسلنا رسالة إلى بريدك الإلكتروني '.$email;
     }else{
-        echo'This email is incorrect!';
+        echo'هذا البريد الإلكتروني غير صحيح!';
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="login.css">
-    <title>Reset Password</title>
+    <title>إعادة تعيين كلمة المرور</title>
 </head>
-<body>
+<body dir="rtl">
     <div>
         <form action="" method="POST">
-            <h1>Reset Password</h1>
-            <input type="text" placeholder="Email" name="email" class="name" required><br>
-            <button type="submit" name="btn" id="btn">reset</button>
-            <p><a href="login.php">Sign In</a></p>
+            <h1>إعادة تعيين كلمة المرور</h1>
+            <input type="text" placeholder="البريد الإلكتروني" name="email" class="name" required><br>
+            <button type="submit" name="btn" id="btn">إعادة تعيين</button>
+            <p><a href="login ar.php">تسجيل الدخول</a></p>
         </form>
     </div>
 </body>

@@ -16,10 +16,10 @@
             $l_code = md5(date("h:i:s").$adress);
 
             if ($_FILES['img']['type'][0] == '') {
-                echo'Must choose a photo';
+                echo'Faut choisir une photo';
             }else{
                 if ($wilaya == 'none') {
-                    echo'Must choose a Wilaya';
+                    echo'Doit choisir une Wilaya';
                 }else{
                     $add = $db->prepare("INSERT INTO louer(user_id,name,disc,wilaya,adress,fonne,facebook,prix,l_code)
                     VALUES(:id,:name,:des,:wil,:adress,:fonne,:fac,:prix,:l_code)");
@@ -33,7 +33,7 @@
                     $add->bindParam('prix',$prix);
                     $add->bindParam('l_code',$l_code);
                     if ($add->execute()) {
-                        echo 'Add success';
+                        echo 'Ajouter le succès';
                     }
                     $l_id = $db->prepare("SELECT id FROM louer WHERE user_id = :id AND l_code = :l_code");
                     $l_id->bindParam('id',$id);
@@ -56,14 +56,14 @@
             }
         }
         if (isset($_POST['anul'])) {
-            header("location:louer.php",true);
+            header("location:louer fr.php",true);
         }
     }else{
-        header("location:login.php",true);
+        header("location:login fr.php",true);
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -131,6 +131,7 @@
             color: rgba(0,0,0,.87)!important;
             margin: auto;
             background-color: chartreuse;
+            padding: 0px 5px;
             margin-top: 5px;
         }
         input[type="file"]{
@@ -148,7 +149,7 @@
             }
             label{
                 height: 30px;
-                width: 130px;
+                width: 160px;
                 font-size: 13px;
             }
             label > img{
@@ -165,20 +166,23 @@
             label{
                 height: 45px;
             }
+            .in{
+                padding: 0px;
+            }
             h2{
                 margin: 0px;
             }
         }
     </style>
-    <title>Add home</title>
+    <title>Ajouter une maison</title>
 </head>
 <body>
     <div class="con">
-        <h2>Add home</h2>
+        <h2>Ajouter une maison</h2>
         <form action="" method="post" enctype="multipart/form-data" class="fr">
             <input type="file" id="file" name="img[]" class="img" accept="image/*,video/*" multiple>
-            <label for="file"><img src="img/image.png" alt="" width="30px">Choose a Photo</label>
-            <input type="text" placeholder="Description" name="des" class="in"><br>
+            <label for="file"><img src="img/image.png" alt="" width="30px">Choisissez une photo</label>
+            <input type="text" placeholder="La description" name="des" class="in"><br>
             <select name="wilaya" id="wilaya" class="in">
                 <option value="none">wilaya</option>
                 <option value="Adrar">1 Adrar</option>
@@ -240,14 +244,14 @@
                 <option value="El M'Ghair">57 El M'Ghair</option>
                 <option value="El Meniaa">58 El Meniaa</option>
             </select><br>
-            <input type="text" placeholder="Address" name="adress" class="in"><br>
-            <input type="text" placeholder="Phone number" name="f_num" class="in" required><br>
+            <input type="text" placeholder="Adresse" name="adress" class="in" required><br>
+            <input type="text" placeholder="Numéro de téléphone" name="f_num" class="in" required><br>
             <input type="text" placeholder="Facebook" name="facb" class="in"><br>
-            <input type="number" placeholder="price" name="prix" class="in"><br>
-            <button name="cadd" class="btn">Add</button>
+            <input type="number" placeholder="prix" name="prix" class="in"><br>
+            <button name="cadd" class="btn">Ajouter</button>
         </form>
         <form action="" method="post">
-            <button name="anul" class="btn">Cancel</button>
+            <button name="anul" class="btn">Annuler</button>
         </form>
     </div>
 </body>

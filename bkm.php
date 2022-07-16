@@ -1,36 +1,38 @@
 <?php
-    session_start();
-    require_once 'db.php';
+session_start();
+require_once 'db.php';
+if(isset($_SESSION['user'])){
     if (isset($_POST['action'])) {
-        $id = $_POST['action'];
-        $del_i = $db->prepare("DELETE FROM image WHERE louer_id = :id");
-        $del_i->bindParam('id',$id);
-        $del_i->execute();
-        $del_b= $db->prepare("DELETE FROM bookmark WHERE poste_id = :id");
-        $del_b->bindParam('id',$id);
-        $del_b->execute();
-        $del_l = $db->prepare("DELETE FROM post_status WHERE poste_id = :id");
-        $del_l->bindParam('id',$id);
-        $del_l->execute();
-        $del = $db->prepare("DELETE FROM louer WHERE id = :id");
-        $del->bindParam('id',$id);
-        $del->execute();
+        $id = $_SESSION['user']->id;
+        $p_id = $_POST['action'];
+        $che = $db->prepare("SELECT id FROM bookmark WHERE user_id = :id AND poste_id = :p_id");
+        $che->bindParam('id',$id);
+        $che->bindParam('p_id',$p_id);
+        $che->execute();
+        $n_id = $che->fetchObject();
+        if ($che->rowCount()>0) {
+            $del = $db->prepare("DELETE FROM bookmark WHERE id = :id");
+            $del->bindParam('id',$n_id->id);
+            $del->execute();
+        }else {
+            $add = $db->prepare("INSERT INTO bookmark(user_id,poste_id)
+            VALUES(:id,:poste_id)");
+            $add->bindParam('id',$id);
+            $add->bindParam('poste_id',$p_id);
+            $add->execute();
+        }
     }
-    if(isset($_SESSION['user'])){
-        if (isset($_POST['add'])) {
-            header("location:add louer.php",true);
-        }
-        if (isset($_POST['exit'])) {
-            session_unset();
-            session_destroy();
-            header("location:http://localhost/maison/login.php");
-        }
-        if (isset($_POST['edit'])) {
-            header("location:http://localhost/maison/account.php");
-        }
-    }else{
-        header("location:login.php",true);
+    if (isset($_POST['exit'])) {
+        session_unset();
+        session_destroy();
+        header("location:http://localhost/maison/login.php");
     }
+    if (isset($_POST['edit'])) {
+        header("location:http://localhost/maison/account.php");
+    }
+}else{
+    header("location:login.php",true);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -241,33 +243,7 @@
             height: 100%;
             display: flex;
             flex-flow: wrap;
-            margin-top: 50px;
             justify-content: center;
-        }
-        .add{
-            margin-left: 10%;
-            width: 80%;
-            height: 40px;
-            background-color: #e4ffff;
-            border-radius: 5px;
-            margin-bottom: 5px;
-            text-align: center;
-            display: block;
-            position: absolute;
-        }
-        .add > a{
-            float: left;
-            padding: 5.5px 0px;
-            text-decoration: none;
-            font-size: 1.5rem;
-            width: 100%;
-            color: rgba(0,0,0,.87)!important;
-            font-family: DroidArabicKufiRegular,Muli,sans-serif;
-            line-height: 1.2;
-            border-radius: 5px;
-        }
-        .add > a:hover{
-            background-color: gainsboro;
         }
         .content{
             width: 300px;
@@ -278,76 +254,7 @@
             font: 1em sans-serif;
             border-radius: 7px;
             display: flex;
-            box-shadow: -5px 5px 20px rgb(0,0,0,0.25);
-        }
-        .content:hover .edi{
-            display: block;
-        }
-        .edi:hover{
-            display: block;
-        }
-        .content:hover .del{
-            display: block;
-        }
-        .del:hover{
-            display: block;
-        }
-        .edi{
-            width: 25px;
-            position: absolute;
-            opacity: 80%;
-            float: left;
-            display: none;
-            cursor: pointer;
-            background-color: whitesmoke;
-        }
-        .del{
-            width: 25px;
-            position: absolute;
-            opacity: 50%;
-            float: right;
-            margin-left: 275px;
-            display: none;
-            cursor: pointer;
-            background-color: whitesmoke;
-        }
-        #al{
-            display: none;
-            position: fixed;
-            z-index: 10;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
-            background-color: #e4ffff;
-            font: 1em sans-serif;
-            border-radius: 7px; 
-            width: 250px;
-            padding: 10px;
-        }
-        .cbtn{
-            float: left;
-            font-size: large;
-            padding: 5px;
-            color: rgba(0,0,0,.87)!important;
-            cursor: pointer;
-        }
-        .cbtn:hover{
-            background-color: #CCCCCC;
-            border-radius: 5px;
-        }
-        .lg{
-            float: right;
-            font-size: large;
-            text-decoration: none;
-            color: red;
-            padding: 5px;
-            background: none;
-            cursor: pointer;
-            border: none;
-        }
-        .lg:hover{
-            background-color: #CCCCCC;
-            border-radius: 5px;
+            box-shadow: -5px 5px 20px rgb(0,0,0,0.1);
         }
         #images{
             width: 300px;
@@ -503,10 +410,10 @@
             }
         }
     </style>
-    <title>Rent homes</title>
+    <title>Bookmark</title>
 </head>
 <body>
-    <header class="hed">
+    <header>
         <div class="menu">
             <div id="m-over"></div>
             <div id="c-menu">
@@ -516,79 +423,15 @@
                 <a href="louer.php">My home</a>
                 <a href="bkm.php">My archives</a>
                 <span id="pr-menu">Language</span>
-                <a href="louer ar.php">العربية</a>
-                <a href="louer.php">English</a>
-                <a href="louer fr.php">Frencais</a>   
-                <span id="pr-menu">Properties</span>
-                <form action="" method="post"><select name="wilaya" id="wilaya">
-                    <option value="none">wilaya</option>
-                    <option value="Adrar">1 Adrar</option>
-                    <option value="Chlef">2 Chlef</option>
-                    <option value="Laghouat">3 Laghouat</option>
-                    <option value="Oum El Bouaghi">4 Oum El Bouaghi</option>
-                    <option value="Batna">5 Batna</option>
-                    <option value="Béjaïa">6 Béjaïa</option>
-                    <option value="Biskra">7 Biskra</option>
-                    <option value="Béchar">8 Béchar</option>
-                    <option value="Blida">9 Blida</option>
-                    <option value="Bouira">10 Bouira</option>
-                    <option value="Tamanrasset">11 Tamanrasset</option>
-                    <option value="Tébessa">12 Tébessa</option>
-                    <option value="Tlemcen">13 Tlemcen</option>
-                    <option value="Tiaret">14 Tiaret</option>
-                    <option value="Tizi Ouzou">15 Tizi Ouzou</option>
-                    <option value="Alger">16 Alger</option>
-                    <option value="Djelfa">17 Djelfa</option>
-                    <option value="Jijel">18 Jijel</option>
-                    <option value="Sétif">19 Sétif</option>
-                    <option value="Saïda">20 Saïda</option>
-                    <option value="Skikda">21 Skikda</option>
-                    <option value="Sidi Bel Abbès">22 Sidi Bel Abbès</option>
-                    <option value="Annaba">23 Annaba</option>
-                    <option value="Guelma">24 Guelma</option>
-                    <option value="Constantine">25 Constantine</option>
-                    <option value="Médéa">26 Médéa</option>
-                    <option value="Mostaganem">27 Mostaganem</option>
-                    <option value="M'Sila">28 M'Sila</option>
-                    <option value="Mascara">29 Mascara</option>
-                    <option value="d'Ouargla">30 d'Ouargla</option>
-                    <option value="Oran">31 Oran</option>
-                    <option value="El Bayadh">32 El Bayadh</option>
-                    <option value="Illizi">33 Illizi</option>
-                    <option value="Bordj Bou Arreridj">34 Bordj Bou Arreridj</option>
-                    <option value="Boumerdès">35 Boumerdès</option>
-                    <option value="El Tarf">36 El Tarf</option>
-                    <option value="Tindouf">37 Tindouf</option>
-                    <option value="Tissemsilt">38 Tissemsilt</option>
-                    <option value="El Oued">39 El Oued</option>
-                    <option value="Khenchela">40 Khenchela</option>
-                    <option value="Souk Ahras">41 Souk Ahras</option>
-                    <option value="Tipaza">42 Tipaza</option>
-                    <option value="Mila">43 Mila</option>
-                    <option value="Aïn Defla">44 Aïn Defla</option>
-                    <option value="Naâma">45 Naâma</option>
-                    <option value="Aïn Témouchent">46 Aïn Témouchent</option>
-                    <option value="Ghardaïa">47 Ghardaïa</option>
-                    <option value="Relizane">48 Relizane</option>
-                    <option value="Timimoun">49 Timimoun</option>
-                    <option value="Bordj Badji Mokhtar">50 Bordj Badji Mokhtar</option>
-                    <option value="Ouled Djellal">51 Ouled Djellal</option>
-                    <option value="Béni Abbès">52 Béni Abbès</option>
-                    <option value="In Salah">53 In Salah</option>
-                    <option value="In Guezzam">54 In Guezzam</option>
-                    <option value="Touggourt">55 Touggourt</option>
-                    <option value="Djanet">56 Djanet</option>
-                    <option value="El M'Ghair">57 El M'Ghair</option>
-                    <option value="El Meniaa">58 El Meniaa</option>
-                </select>
-                <button type="submit" name="sr" class="sr">Search</button></form>
+                <a href="bkm ar.php">العربية</a>
+                <a href="bkm.php">English</a>
+                <a href="bkm fr.php">Frencais</a>    
             </div>
             <a><img src="img/menu-burger.png" alt="" class="s-menu"></a>
             <a href="index.php" class="n"><img src="img/home.png" alt=""></a>
             <a href="bkm.php" class="n"><img src="img/bookmark.png" alt="" class="bok"></a>
         </div>
         <div class="ri">
-            
             <?php
                 if(isset($_SESSION['user'])){
                     echo '<form action="" method="POST">
@@ -604,7 +447,6 @@
         </div>
     </header>
     <section class="sec">
-        <div class="add"><a href="add louer.php">Add home</a></div>
         <div class="Alerts"></div>
         <div class="model">
             <span class="close" >&times;</span>
@@ -613,96 +455,83 @@
             <!-- <img src="img/next.png" alt="" class="next"> -->
         </div>
         <div class="sec-con">
-            <div id="al">
-                <p>Are you sure you want to delete?</p>
-                <a class="cbtn">Cancel</a>
-                <div class="dl"><button class="lg" type="submit" name="d">Delete</button></div>
-            </div>
         <?php
          if(isset($_SESSION['user'])){
             $id = $_SESSION['user']->id;
-            if (isset($_POST['sr'])) {
-                $wilaya = $_POST['wilaya'];
-                if ($wilaya != 'none') {
-                    $show = $db->prepare("SELECT * FROM louer WHERE user_id = :id AND wilaya = :wilaya");
-                    $show->bindParam('id',$id);
-                    $show->bindParam('wilaya',$wilaya);
-                    $show->execute();
-                }else{
-                    $show = $db->prepare("SELECT * FROM louer WHERE user_id = :id");
-                    $show->bindParam('id',$id);
-                    $show->execute();    
-                }
-            } else {
-                $show = $db->prepare("SELECT * FROM louer WHERE user_id = :id");
-                $show->bindParam('id',$id);
+            $bk = $db->prepare("SELECT poste_id FROM bookmark WHERE user_id = :id");
+            $bk->bindParam('id',$id);
+            $bk->execute();
+            
+            foreach ($bk as $np_id) {
+                $nbk = $np_id['poste_id'];
+                $show = $db->prepare("SELECT * FROM louer WHERE id = :id");
+                $show->bindParam('id',$nbk);
                 $show->execute();
-            }
-
-            foreach ($show as $result) {
-                $imshow = $db->prepare("SELECT * FROM image WHERE louer_id = :id");
-                $imshow->bindParam('id',$result['id']);
-                $imshow->execute();
-
-                echo'<div class="content"><form action="" method="POST">
-                <div class="ed"><a href="edit.php?id='.$result['id'].'"><img src="img/editing.png" alt="" class="edi"></a></div>
-                <img src="img/delete.png" alt="" class="del" data-id="'.$result['id'].'">
-                <div id="images">'; 
-
-                foreach ($imshow as $results) {
-                    $imgshow = 'data:'.$results['type'].';base64,'.base64_encode($results['image']);       
-                    echo'<img src="'.$imgshow.'" alt="" width="150" class="img" data-src="'.$imgshow.'" data-id="'.$result['id'].'" id="h'.$result['id'].'">';
-                }
-
-                echo'
-                </div>
-                    <table class="text_cont">';
-                        if ($result['disc'] != '') {
-                            echo'<tr><td class="b">'.$result['disc'].'</td></tr>';
+                
+                foreach ($show as $result) {
+                    $imshow = $db->prepare("SELECT * FROM image WHERE louer_id = :id");
+                    $imshow->bindParam('id',$np_id['poste_id']);
+                    $imshow->execute();
+    
+                    echo'<div class="content"><form action="" method="POST">
+                    <div id="images">'; 
+    
+                    foreach ($imshow as $results) {
+                        $imgshow = 'data:'.$results['type'].';base64,'.base64_encode($results['image']);       
+                        echo'<img src="'.$imgshow.'" alt="" width="150" class="img" data-src="'.$imgshow.'" data-id="'.$result['id'].'" id="h'.$result['id'].'">';
                         }
-                        echo'<tr><td>'.$result['adress'].'</td></tr>
-                        <tr><td class="b">'.$result['wilaya'].'</td></tr>';
-                        if ($result['facebook'] != '') {
-                            echo'<tr><td><img src="img/facebook.png" alt="facebook" width="20px"> '.$result['facebook'].'</td></tr>';
-                        }
-                        echo'<tr><td class="b"><img src="img/phone-call.png" alt="phone" width="20px"> '.$result['fonne'].'</td></tr>';
-                        if ($result['prix'] != '0') {
-                            echo'<tr><td class="b"><div class="price">'.$result['prix'].' DA</div></td></tr>';
-                        }
-                        $chec = $db->prepare("SELECT * FROM post_status WHERE user_id = :id AND poste_id = :p_id");
-                        $chec->bindParam('id',$id);
-                        $chec->bindParam('p_id',$result['id']);
-                        $chec->execute();
-                        if ($chec->rowCount()>0) {
-                            $sel = $db->prepare("SELECT stat FROM post_status WHERE user_id = :id AND poste_id = :p_id");
-                            $sel->bindParam('id',$id);
-                            $sel->bindParam('p_id',$result['id']);
-                            $sel->execute();
-                            $stat = $sel->fetchObject();
-                            if ($stat->stat == 0) {
-                                echo'<tr><td><div class="heart" data-id="'.$result['id'].'"></div><span class="num_like">'.$result['n_like'].'</span>';
-                            } else {
-                                echo'<tr><td><div class="heart-n" data-id="'.$result['id'].'"></div><span class="num_like">'.$result['n_like'].'</span>';
+    
+                    echo'
+                    </div>
+                        <table class="text_cont">';
+                            if ($result['disc'] != '') {
+                                echo'<tr><td class="b">'.$result['disc'].'</td></tr>';
                             }
-                        }else {
-                            echo'<tr><td><div class="heart" data-id="'.$result['id'].'"></div><span class="num_like">'.$result['n_like'].'</span>';
-                        }
-                        $che = $db->prepare("SELECT id FROM bookmark WHERE user_id = :id AND poste_id = :p_id");
-                        $che->bindParam('id',$id);
-                        $che->bindParam('p_id',$result['id']);
-                        $che->execute();
-                        if ($che->rowCount()>0) {
-                            echo'<div class="n-bk" id="'.$result['id'].'" data-id="'.$result['id'].'"></div></td></tr>';
-                        }else {
-                            echo'<div class="bk" id="'.$result['id'].'" data-id="'.$result['id'].'"></div></td></tr>';
-                        }
-                        
-                    echo'</table>
-                ';
-
-                echo'</form></div>';
+                            echo'<tr><td>'.$result['adress'].'</td></tr>
+                            <tr><td class="b">'.$result['wilaya'].'</td></tr>';
+                            if ($result['facebook'] != '') {
+                                echo'<tr><td><img src="img/facebook.png" alt="facebook" width="20px"> '.$result['facebook'].'</td></tr>';
+                            }
+                            echo'<tr><td class="b"><img src="img/phone-call.png" alt="phone" width="20px"> '.$result['fonne'].'</td></tr>';
+                            if ($result['prix'] != '0') {
+                                echo'<tr><td class="b"><div class="price">'.$result['prix'].' DA</div></td></tr>';
+                            }
+                            $chec = $db->prepare("SELECT * FROM post_status WHERE user_id = :id AND poste_id = :p_id");
+                            $chec->bindParam('id',$id);
+                            $chec->bindParam('p_id',$result['id']);
+                            $chec->execute();
+                            if ($chec->rowCount()>0) {
+                                $sel = $db->prepare("SELECT stat FROM post_status WHERE user_id = :id AND poste_id = :p_id");
+                                $sel->bindParam('id',$id);
+                                $sel->bindParam('p_id',$result['id']);
+                                $sel->execute();
+                                $stat = $sel->fetchObject();
+                                if ($stat->stat == 0) {
+                                    echo'<tr><td><div class="heart" data-id="'.$result['id'].'"></div><span class="num_like">'.$result['n_like'].'</span>';
+                                } else {
+                                    echo'<tr><td><div class="heart-n" data-id="'.$result['id'].'"></div><span class="num_like">'.$result['n_like'].'</span>';
+                                }
+                            }else {
+                                echo'<tr><td><div class="heart" data-id="'.$result['id'].'"></div><span class="num_like">'.$result['n_like'].'</span>';
+                            }
+                            $che = $db->prepare("SELECT id FROM bookmark WHERE user_id = :id AND poste_id = :p_id");
+                            $che->bindParam('id',$id);
+                            $che->bindParam('p_id',$nbk);
+                            $che->execute();
+                            if ($che->rowCount()>0) {
+                                echo'<div class="n-bk" id="'.$result['id'].'" data-id="'.$result['id'].'"></div></td></tr>';
+                            }else {
+                                echo'<div class="bk" id="'.$result['id'].'" data-id="'.$result['id'].'"></div></td></tr>';
+                            }
+                            
+                        echo'</table>
+                    ';
+    
+                    echo'</form></div>';
+                }
             }
- 
+        }else{
+            
         }
         ?>
         </div> 
@@ -742,6 +571,7 @@
             document.getElementById('c-menu').style.width="280px";
             document.getElementById('p-menu').style.width="280px";
             document.getElementById('m-over').style.display="block";
+            
         });
     });
     $(document).ready(function(){
@@ -758,40 +588,6 @@
             document.getElementById('p-menu').style.width="0px";
             document.getElementById('pr-menu').style.width="0px";
             document.getElementById('m-over').style.display="none";
-            document.getElementById('al').style.display="none";
-        });
-    });
-    $(document).ready(function(){
-        $(document).on('click','.del',function(){
-            document.getElementById('m-over').style.display="block";
-            document.getElementById('al').style.display="block";
-        });
-    });
-    $(document).ready(function(){
-        $(document).on('click','.cbtn',function(){
-            document.getElementById('m-over').style.display="none";
-            document.getElementById('al').style.display="none";
-        });
-    });
-    $(document).ready(function(){
-        $(document).on('click','.lg',function(){
-            document.getElementById('m-over').style.display="none";
-            document.getElementById('al').style.display="none";
-        });
-    });
-    $(document).ready(function(){
-        $(document).on('click','.del',function(){
-            var action = $(this).data('id');
-            $(document).on('click','.lg',function(){
-                $.ajax({
-                    url:"louer.php",
-                    type:"post",
-                    data:{action:action},
-                    success:function(data){
-                    }
-                });
-                location.reload();
-            });
         });
     });
     $(document).ready(function(){
@@ -804,6 +600,7 @@
                 data:{action:action},
                 success:function(data){
                     $btn.siblings('span.num_like').text(data);
+                    console.log(data);
                 }
             });
             $(this).toggleClass("heart-n-active");
@@ -819,9 +616,38 @@
                 data:{action:action},
                 success:function(data){
                     $btn.siblings('span.num_like').text(data);
+                    console.log(data);
                 }
             });
             $(this).toggleClass("heart-active");
+        });
+    });
+    $(document).ready(function(){
+        $(document).on('click','.bk',function(){
+            var action = $(this).data('id');
+            $btn = $(this);
+            $.ajax({
+                url:"bkm.php",
+                type:"post",
+                data:{action:action},
+                success:function(data){
+                }
+            });
+            $(this).toggleClass("active");
+        });
+    });
+    $(document).ready(function(){
+        $(document).on('click','.n-bk',function(){
+            var action = $(this).data('id');
+            $btn = $(this);
+            $.ajax({
+                url:"bkm.php",
+                type:"post",
+                data:{action:action},
+                success:function(data){
+                }
+            });
+            $(this).toggleClass("active");
         });
     });
     const preview = ()=>{
@@ -843,31 +669,5 @@
     })
     }
     preview();
-    $(document).ready(function(){
-        $(document).on('click','.bk',function(){
-            var action = $(this).data('id');
-            $.ajax({
-                url:"bkm.php",
-                type:"post",
-                data:{action:action},
-                success:function(data){
-                }
-            });
-            $(this).toggleClass("active");
-        });
-    });
-    $(document).ready(function(){
-        $(document).on('click','.n-bk',function(){
-            var action = $(this).data('id');
-            $.ajax({
-                url:"bkm.php",
-                type:"post",
-                data:{action:action},
-                success:function(data){
-                }
-            });
-            $(this).toggleClass("active");
-        });
-    });
 </script>
 </html>

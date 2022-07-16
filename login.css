@@ -3,13 +3,15 @@ body{
     background-size: cover;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: center;
+    height: 100vh;
+    margin: 0px;
 }
 div{
     top: 50%;
     left: 50%;
     position: absolute;
     transform: translate(-50%,-50%);
-    width: 280px;
+    width: 320px;
 }
 .name{
     border: none;
@@ -37,4 +39,9 @@ div{
 }
 a{
     color: #6C7336;
+}
+@media screen and (max-width:325px){
+    div{
+        width: 230px;
+    }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,7 +19,7 @@
             font-size: 17px;
         }
     </style>
-    <title>Account activate</title>
+    <title>Activer le compte</title>
 </head>
 <body>
 <?php
@@ -28,19 +28,20 @@
         $email = $_SESSION['user']->email;
         $code = $_SESSION['user']->code;
         echo'<form action="" method="post">
-            <h1>Account activate</h1>
-            <p>Thank you for registering on our site.</p>
-            <p>We have sent a message to your email <a href="https://www.gmail.com">'.$email.'</a>, please go to it to complete the process.
-            <button type="submit" name="s" class="s">Send again!</button></p>
+            <h1>Activer le compte</h1>
+            <p>Merci de vous être inscrit sur notre site.</p>
+            <p>Nous avons envoyé un message à votre adresse e-mail <a href="https://www.gmail.com">'.$email.'</a>, veuillez vous y rendre pour terminer le processus.
+            <button type="submit" name="s" class="s">Envoyer à nouveau!</button></p>
         </form>';
         if (isset($_POST['s'])) {
             require_once 'mailer.php';
+            require_once 'mailer.php';
             $mail->setFrom('ilyeeees220@gmail.com', 'maison');
             $mail->addAddress($email);
-            $mail->Subject = 'verification code';
-            $mail->Body    = '<h1>Thank you for registering on our site</h1><p>To verify your account <a href="http://localhost/maison/active.php?code='.$code.'">Press here</a></p>';
+            $mail->Subject = 'Le code de vérification';
+            $mail->Body    = '<h1>Merci de vous être inscrit sur notre site</h1><p>Pour vérifier votre compte <a href="http://localhost/maison/active fr.php?code='.$code.'">cliquez ici</a></p>';
             $mail->send();
-            echo'We have sent another message';
+            echo'Nous avons envoyé un autre message';
         }
         if (isset($_GET['code'])) {
             require_once 'db.php';
@@ -54,14 +55,14 @@
                 $update->bindParam('newcode',$code);
             
                 if ($update->execute()) {
-                    echo'Your account has been successfully verified<a href="login.php">Login</a>';
+                    echo'Votre compte a été vérifié avec succès<a href="login fr.php">Connexion</a>';
                 }
             }else {
-                echo'This code is no longer valid';
+                echo"Ce code n'est plus valide";
             }
         }
     }else{
-        header("location:login.php",true);
+        header("location:login fr.php",true);
     }
 ?>
 </body>
